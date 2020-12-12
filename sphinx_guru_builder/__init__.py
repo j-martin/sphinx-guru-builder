@@ -95,6 +95,13 @@ class GuruBuilder(StandaloneHTMLBuilder):
         base_docname = os.path.basename(docname)
         if base_docname != "index":
             ctx = self.get_doc_context(docname, body, metatags)
+            if (
+                doctree.children
+                and doctree.children[0].children
+                and doctree.children[0].children[0].tagname == "title"
+            ):
+                # Removing the h1 header to avoid having it duplicated.
+                doctree.children[0].children.pop(0)
             self.handle_page(docname, ctx, event_arg=doctree)
             self.write_card_definition(docname)
 
