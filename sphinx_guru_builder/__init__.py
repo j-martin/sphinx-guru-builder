@@ -102,6 +102,8 @@ class GuruBuilder(StandaloneHTMLBuilder):
             ):
                 # Removing the h1 header to avoid having it duplicated.
                 doctree.children[0].children.pop(0)
+            if self.config.html_published_location and doctree.children:
+                ctx["source_url"] = self.build_external_url(docname)
             self.handle_page(docname, ctx, event_arg=doctree)
             self.write_card_definition(docname)
 
@@ -109,7 +111,7 @@ class GuruBuilder(StandaloneHTMLBuilder):
         prefix = self.config.html_published_location
         if not prefix:
             return ""
-        return (path.join(prefix, f"{docname}.html"),)
+        return path.join(prefix, f"{docname}.html")
 
     def write_card_definition(self, docname: str) -> None:
         directory = os.path.dirname(docname)

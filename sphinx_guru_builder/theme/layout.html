@@ -1,5 +1,6 @@
 <html>
   <body>
+    {% if source_url %}<p>Source: <a href="{{ source_url }}">{{ source_url }}</a></p>{% endif %}
     {% block body %}
     {% endblock %}
   </body>
