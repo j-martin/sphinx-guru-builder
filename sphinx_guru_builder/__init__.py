@@ -87,6 +87,15 @@ class GuruBuilder(StandaloneHTMLBuilder):
         self.imgpath = self.resources_path
         self.dlpath = self.resources_path
         self.current_docname = docname
+
+        if (
+            doctree.children
+            and doctree.children[0].children
+            and doctree.children[0].children[0].tagname == "title"
+        ):
+            # Removing the h1 header to avoid having it duplicated.
+            doctree.children[0].children.pop(0)
+
         self.docwriter.write(doctree, destination)
         self.docwriter.assemble_parts()
         body = self.docwriter.parts["fragment"]
@@ -95,13 +104,6 @@ class GuruBuilder(StandaloneHTMLBuilder):
         base_docname = os.path.basename(docname)
         if base_docname != "index":
             ctx = self.get_doc_context(docname, body, metatags)
-            if (
-                doctree.children
-                and doctree.children[0].children
-                and doctree.children[0].children[0].tagname == "title"
-            ):
-                # Removing the h1 header to avoid having it duplicated.
-                doctree.children[0].children.pop(0)
             if self.config.html_published_location and doctree.children:
                 ctx["source_url"] = self.build_external_url(docname)
             self.handle_page(docname, ctx, event_arg=doctree)
