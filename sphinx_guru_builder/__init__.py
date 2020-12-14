@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 class GuruBuilder(StandaloneHTMLBuilder):
     name = "guru"
-    epilog = __('The Guru pages are in %(outdir)s.')
+    epilog = __("The Guru pages are in %(outdir)s.")
     resources_path = "resources"
 
     def init(self) -> None:
@@ -63,12 +63,13 @@ class GuruBuilder(StandaloneHTMLBuilder):
         self.finish_tasks.add_task(self.write_buildinfo)
         self.write_entity_definition(".", "collection", {"Tags": []})
         self.write_boards()
-        archive_path = path.join(self.outdir, '..', 'guru.zip')
+        archive_path = path.join(self.outdir, "..", "guru.zip")
         if path.exists(archive_path):
             os.unlink(archive_path)
 
-
-        shutil.make_archive(archive_path.replace('.zip', ''), 'zip', root_dir=self.outdir, base_dir='.')
+        shutil.make_archive(
+            archive_path.replace(".zip", ""), "zip", root_dir=self.outdir, base_dir="."
+        )
 
     def get_target_uri(self, docname: str, typ: str = None) -> str:
         if docname == "index":
